@@ -2,8 +2,8 @@
 
 <img width="562" alt="SumUp_RxCocoa" src="https://user-images.githubusercontent.com/13548107/152744815-0f759ec9-0317-4605-a36b-340d2b17a6be.png">
 
-## Unowned vs. weak with RxCocoa
- If your closure is an escaping closure, it’s always a good idea to use either a weak or unowned capture group.
+## Using binding observables to display data
+ Make your stream reusable and transform a single-use data source into a multi-use Observable.
  
  ```swift
  let search = searchCityName.rx.text.orEmpty
