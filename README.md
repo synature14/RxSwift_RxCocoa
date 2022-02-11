@@ -157,6 +157,14 @@ Observable이 새로 들어오면 이전에 생성된 observable을 dispose시�
 
 
 ![flatMapLatest02](https://user-images.githubusercontent.com/13548107/153554532-c1732aca-387d-44a9-bc45-18ef099c6422.png)
+> 위 그림에서 헷갈릴수 있으니 '01', '02', '03' Observable을 각각 'Blue', 'Green', 'Orange'라고 하자.
+> 1) Blue observable에서 1을 방출했으므로 flatMapLatest{}의 최종 리턴 stream에 '1' 방출!
+> 2) 이후에 Green observable에서 2를 방출했으므로 stream에 '2'방출! 하면서~ 기존 Blue observable에 대한 listening 끊음
+> 3) 따라서 Blue에서 방출한 '3'값은 무시
+> 4) Orange observable에서 4를 방출 -> 최종 리컨 stream에도 '4'방출! 하면서~~ 기존 Green observable에 대한 listening 끊음
+> 5) 따라서 Green에서 방출한 '5' 무시
+> 6) Orange observable에서 '6' 방출 -> 최종 리컨 stream에도 '6'방출!
+
 
 ```swift
 struct Student {
