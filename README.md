@@ -36,7 +36,7 @@ search.map(\.cityName)
  
  ## RxSwift - Combining Operators
  ### 1) merge
- 단순히 모든 event를 결합 (단 순서는 번갈아 가며)
+ 단순히 모든 event를 결합 (단 순서는 번갈아 가며) -> 여러 stream의 event들을 각 stream의 순서 번갈아가며 event 결합
 ![merge](https://user-images.githubusercontent.com/13548107/153549336-c58dbf74-4c51-41ac-9b58-348e819538c4.png)
 
 ```swift
@@ -68,7 +68,27 @@ Observable.merge(first, second)
 
 *Q.언제쓰이나? 
 "such as observing several text fields at once and combining their values, watching the status of multiple sources, and so on."
-ex) 이메일과 비밀번호가 변할 때마다 버튼의 enabled 를 계산할 때
+**ex) 이메일과 비밀번호가 변할 때마다 버튼의 enabled 를 계산할 때
+
+```swift
+let disposeBag = DisposeBag()
+
+let first = Observable.of(1, 2, 3, 4)
+let second = Observable.of("A", "B", "C")
+
+Observable.combineLatest(first, second)
+    .subscribe(onNext: { print("\($0)" + $1) })
+    .disposed(by: dispseBag)
+
+/* Prints:
+1A
+2A
+2B
+3B
+3C
+4C
+*/
+```
 
 
 
