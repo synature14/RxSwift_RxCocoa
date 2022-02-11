@@ -66,7 +66,7 @@ Observable.merge(first, second)
 
 ![combineLatest](https://user-images.githubusercontent.com/13548107/153549679-3d536f11-0c23-4baf-934a-905933269a4e.png)
 
-*Q.언제쓰이나? 
+* Q.언제쓰이나? 
 >such as observing several text fields at once and combining their values, watching the status of multiple sources, and so on.
 **ex) 이메일과 비밀번호가 변할 때마다 버튼의 enabled 를 계산할 때
 
@@ -94,12 +94,16 @@ Observable.combineLatest(first, second)
 
 
 ### 3) withLatestFrom
-A.withLatestFrom(B) {  ($0, $1)  }  $0는 A의 onNext값. $1은 B의 onNext값.
- 
+A.withLatestFrom(B) {  ($0, $1)  }  - $0는 A의 onNext값. $1은 B의 onNext값.
+
+장점: 새로운 이벤트가 발생한 스트림에서 지정한 스트림의 가장 최신 아이템을 얻을 수 있음
+
 * 조건1) B가 1번 이상 방출된 상태에서부터 시작! (그 전에는 모든 이벤트 무시 **그전에A값 방출되어도,,,,)
 * 조건2) withLatestFrom 메소드를 호출한 observable 즉 A의 이벤트가 발생한 경우에 B 이벤트 방출.
- 
-![withLatestFrom](https://user-images.githubusercontent.com/13548107/153550399-f32d846f-2c11-450f-be62-950d7b4bbbb3.png)
+
+ ![withLatestFrom](https://user-images.githubusercontent.com/13548107/153553677-4bb53c7f-2fe9-437b-a536-947957a7e885.png)
+
+
 ```swift
 // withLatestFrom
 oddNumber.withLatestFrom(evenNumber) { "\($0) \($1)"}
@@ -138,6 +142,56 @@ Observable.zip(first, second)
 */
 ```
 
+***
+
+## RxSwift - Transforming Operators
+### 1) flatMap
+FlatMap은 구성 요소 하나하나 observable로 만들어서 방출합니다.
+
+> Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
+> ![flatMap](https://user-images.githubusercontent.com/13548107/153555374-84333fc0-5f1f-4638-ac06-84b8ebefe484.png)
 
 
-## RxSwift - Filter Operators
+### 2) flatMapLatest
+Observable이 새로 들어오면 이전에 생성된 observable을 dispose시키고 새로운 것을 이용
+
+
+![flatMapLatest02](https://user-images.githubusercontent.com/13548107/153554532-c1732aca-387d-44a9-bc45-18ef099c6422.png)
+
+```swift
+struct Student {
+  var score: BehaviorSubject<Int>
+}
+
+let disposeBag = DisposeBag()     
+
+let ryan = Student(score: BehaviorSubject(value: 80))
+let charlotte = Student(score: BehaviorSubject(value: 90))
+
+let student = PublishSubject<Student>()
+
+student
+   .flatMapLatest {
+       $0.score
+}
+   .subscribe(onNext: {
+       print($0)
+   })
+   .disposed(by: disposeBag)
+
+student.onNext(ryan)
+ryan.score.onNext(85)
+
+student.onNext(charlotte)
+ryan.score.onNext(95) // 지금 구독하고 있는 최신 이벤트는 charlotte이므로 ryan에 이벤트는 무시
+charlotte.score.onNext(100)
+
+/* Prints:
+ 80 
+ 85 
+ 90 
+ 100
+*/
+```
+
+
