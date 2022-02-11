@@ -124,6 +124,7 @@ oddNumber.onNext(7) // 7 4
 ### 4) zip
 발생 순서가 같은 이벤트만 발생 (순서가 다르면 발생하지 않음)
 >They pair each next value of each observable at the same logical position (1st with 1st, 2nd with 2nd, etc.)
+
 ![zip](https://user-images.githubusercontent.com/13548107/153550421-5aedf6c0-d4e7-4991-92c8-8fc61aa5e105.png)
 ```swift
 let disposeBag = DisposeBag()
@@ -148,8 +149,10 @@ Observable.zip(first, second)
 ### 1) flatMap
 FlatMap은 구성 요소 하나하나 observable로 만들어서 방출합니다.
 
+
 > Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
 > ![flatMap](https://user-images.githubusercontent.com/13548107/153555374-84333fc0-5f1f-4638-ac06-84b8ebefe484.png)
+
 
 
 ### 2) flatMapLatest
