@@ -61,13 +61,15 @@ Observable.merge(first, second)
 
 
 ### 2) combineLatest
-여러 stream 중에서 단 한 가지라도 이벤트를 방출하면, 각각 stream의 맨 마지막 값을 뽑아서 새로운 값을 방출
+여러 stream 중에서 단 한 가지라도 이벤트를 방출하면, 각각 stream의 맨 마지막 값을 뽑아서 새로운 값을 방출.
+
 한 번 값을 방출한 이후에는 클로저가 각각의 Observable이 방출했었던 최신 값을 받음
 
 ![combineLatest](https://user-images.githubusercontent.com/13548107/153549679-3d536f11-0c23-4baf-934a-905933269a4e.png)
 
 * Q.언제쓰이나? 
 >such as observing several text fields at once and combining their values, watching the status of multiple sources, and so on.
+
 **ex) 이메일과 비밀번호가 변할 때마다 버튼의 enabled 를 계산할 때
 
 ```swift
